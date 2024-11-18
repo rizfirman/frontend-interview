@@ -1,0 +1,18 @@
+{
+  "@vite/client": {
+    "prefetch": true,
+    "isEntry": true,
+    "file": "@vite/client",
+    "css": [],
+    "module": true,
+    "resourceType": "script"
+  },
+  "/Users/rizfirman/Documents/perkodingan/porto-project/frontend-interview/hoka-shop/node_modules/nuxt/dist/app/entry.js": {
+    "resourceType": "script",
+    "module": true,
+    "prefetch": true,
+    "preload": true,
+    "isEntry": true,
+    "file": "/Users/rizfirman/Documents/perkodingan/porto-project/frontend-interview/hoka-shop/node_modules/nuxt/dist/app/entry.js"
+  }
+}

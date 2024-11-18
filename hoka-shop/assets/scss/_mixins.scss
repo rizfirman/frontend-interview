@@ -1,0 +1,49 @@
+@mixin catalog-page {
+    .catalog-page {
+      margin-bottom: 50px;
+  
+      &__header {
+        font-size: 2rem;
+        text-align: center;
+        margin-top: 5rem;
+      }
+  
+      &__skeleton-card {
+        border: white 1px solid;
+        border-radius: 1rem;
+        padding: 20px;
+        transition: transform 0.2s ease;
+      }
+  
+      &__gallery {
+        max-width: 1200px;
+        margin: auto;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 3rem;
+        padding: 20px;
+  
+        @media (max-width: 1024px) {
+          grid-template-columns: repeat(3, 1fr);
+          gap: 2rem;
+        }
+  
+        @media (max-width: 768px) {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1.5rem;
+        }
+  
+        @media (max-width: 480px) {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+      }
+  
+      &__footer {
+        max-width: 1200px;
+        margin: auto;
+        margin-top: 2rem;
+        text-align: center;
+      }
+    }
+  }

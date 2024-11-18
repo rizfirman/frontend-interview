@@ -1,0 +1,1 @@
+export { default } from "file:///Users/rizfirman/Documents/perkodingan/porto-project/frontend-interview/hoka-shop/node_modules/@nuxt/vite-builder/dist/runtime/client.manifest.mjs"
