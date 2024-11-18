@@ -165,7 +165,7 @@
           button {
             width: 30px;
             height: 30px;
-            background-color: #ff9800;
+            background-color: vars.$secondary-color;
             color: #fff;
             border: none;
             border-radius: 5px;
@@ -214,7 +214,7 @@
 
       .checkout-button {
         margin-top: 20px;
-        background-color: #ff9800;
+        background-color: vars.$secondary-color;
         color: #fff;
         padding: 10px 20px;
         border: none;
@@ -229,13 +229,13 @@
       }
     }
     &.dark {
-      background-color: #000000;
-      color: #ffffff;
+      background-color: black;
+      color: vars.$primary-color;
       .cart-item {
-        border: 1px solid #fff;
+        border: 1px solid vars.$primary-color;
       }
       .checkout-card {
-        border: 1px solid #fff;
+        border: 1px solid vars.$primary-color;
       }
     }
   }

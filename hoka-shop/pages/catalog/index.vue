@@ -1,93 +1,27 @@
 <template>
   <div>
-    <div class="catalog-page">
+    <div
+      :class="[
+        'catalog-page',
+        {
+          dark: darkModeStore.isDarkMode,
+        },
+      ]"
+    >
       <p class="catalog-page__header">Catalog</p>
 
-      <div>
-        <BaseSearch v-model:search-query="searchQuery" />
-        <BaseSort v-model:sort-option="sortOption" />
-
-        <!-- Filters -->
-        <div class="catalog-page__filters">
-          <div class="filter-rating">
-            <label>
-              Minimum Rating:
-              <input
-                v-model.number="minimumRating"
-                type="number"
-                min="0"
-                max="5"
-                step="0.1"
-              />
-            </label>
-          </div>
-          <div class="dropdown">
-            <label for="category">Category:</label>
-            <select id="category" v-model="selectedCategory">
-              <option value="">All Categories</option>
-              <option
-                v-for="category in categories"
-                :key="category"
-                :value="category"
-              >
-                {{ category }}
-              </option>
-            </select>
-          </div>
-
-          <div class="dropdown">
-            <label for="seller">Seller:</label>
-            <select id="seller" v-model="selectedSeller">
-              <option value="">All Sellers</option>
-              <option v-for="seller in sellers" :key="seller" :value="seller">
-                {{ seller }}
-              </option>
-            </select>
-          </div>
-
-          <div class="dropdown">
-            <label for="availability">Availability:</label>
-            <select id="availability" v-model="selectedAvailability">
-              <option value="">All Availability</option>
-              <option value="Available">Available</option>
-              <option value="Out of Stock">Out of Stock</option>
-            </select>
-          </div>
-
-          <div class="dropdown">
-            <label for="recommended">Recommended Seller:</label>
-            <select id="recommended" v-model="selectedRecommended">
-              <option value="">All Sellers</option>
-              <option value="true">Recommended</option>
-              <option value="false">Not Recommended</option>
-            </select>
-          </div>
-          <div class="filter-range">
-            <label for="price-slider">Price Range</label>
-            <div class="range-slider">
-              <input
-                id="min-price"
-                v-model.number="priceRange.min"
-                type="range"
-                :min="minPrice"
-                :max="maxPrice"
-              />
-              <input
-                id="max-price"
-                v-model.number="priceRange.max"
-                type="range"
-                :min="minPrice"
-                :max="maxPrice"
-              />
-              <div class="price-values">
-                <span>{{ convertToRupiah(priceRange.min) }}</span>
-                <span>-</span>
-                <span>{{ convertToRupiah(priceRange.max) }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <CatalogFilter
+        v-model:search-query="searchQuery"
+        v-model:sort-option="sortOption"
+        v-model:selected-category="selectedCategory"
+        v-model:selected-seller="selectedSeller"
+        v-model:selected-availability="selectedAvailability"
+        v-model:selected-recommended="selectedRecommended"
+        v-model:minimum-rating="minimumRating"
+        v-model:price-range="priceRange"
+        :min-price="minPrice"
+        :max-price="maxPrice"
+      />
 
       <BaseEmptyState
         v-if="productStore.products.length === 0 && !productStore.isLoading"
@@ -98,7 +32,6 @@
         :search-query="searchQuery"
       />
 
-      <!-- Product Gallery -->
       <div v-else class="catalog-page__gallery">
         <div
           v-for="(product, index) in visibleProducts"
@@ -111,7 +44,6 @@
         </div>
       </div>
 
-      <!-- Loading and End Indicators -->
       <div v-if="isLoadingMore" class="catalog-page__loading">
         <p>Loading more products...</p>
       </div>
@@ -124,9 +56,6 @@
 </template>
 
 <script setup lang="ts">
-  import { useProductStore } from '@/stores/productStore'
-  import { computed, ref, watch, onMounted, onUnmounted } from 'vue'
-  import { convertToRupiah } from '@/utils'
   import debounce from 'lodash/debounce'
 
   definePageMeta({
@@ -134,6 +63,11 @@
   })
 
   const productStore = useProductStore()
+  const darkModeStore = useDarkModeStore()
+
+  onMounted(() => {
+    darkModeStore.loadDarkModeFromCookie()
+  })
 
   const itemsPerPage = 8
   const currentPage = ref(1)
@@ -142,13 +76,12 @@
   const sortOption = ref('lowest')
   const isLoadingMore = ref(false)
 
-  // Filters
   const selectedCategory = ref('')
   const selectedSeller = ref('')
   const priceRange = ref({ min: 0, max: Infinity })
   const selectedAvailability = ref('')
   const minimumRating = ref(0)
-  const selectedRecommended = ref('') // Filter for recommended seller
+  const selectedRecommended = ref('')
 
   const maxPrice = computed(() =>
     Math.max(...productStore.products.map((p) => p.price)),
@@ -156,14 +89,6 @@
   const minPrice = computed(() =>
     Math.min(...productStore.products.map((p) => p.price)),
   )
-
-  // Extract unique filter values
-  const categories = computed(() => [
-    ...new Set(productStore.products.map((p) => p.category)),
-  ])
-  const sellers = computed(() => [
-    ...new Set(productStore.products.map((p) => p.seller)),
-  ])
 
   // Debounced filters and sorting
   const debouncedUpdateFilteredProducts = debounce(() => {
@@ -298,111 +223,13 @@
     margin: 2rem auto;
     max-width: 1200px;
     padding: 0 1rem;
-
     &__header {
       font-size: 2.5rem;
       text-align: center;
       margin-bottom: 2rem;
       margin-top: 100px;
-
+      color: black;
       font-weight: bold;
-      text-transform: uppercase;
-    }
-
-    &__filters {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-      justify-items: center;
-
-      .dropdown,
-      .filter-range,
-      .filter-rating {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
-        height: fit-content;
-        max-width: 250px;
-        padding: 0.8rem;
-        border: 1px solid #ddd;
-        border-radius: 0.5rem;
-        background-color: #fff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        transition: box-shadow 0.3s ease;
-
-        &:hover {
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-        }
-
-        label {
-          font-size: 1rem;
-          font-weight: bold;
-          color: #555;
-          margin-bottom: 0.5rem;
-        }
-
-        select,
-        input {
-          width: 100%;
-          padding: 0.5rem 1rem;
-          font-size: 1rem;
-          border: 1px solid #ccc;
-          border-radius: 0.5rem;
-          background-color: #f9f9f9;
-          transition: border-color 0.3s ease;
-
-          &:focus {
-            border-color: #ff9800;
-            outline: none;
-          }
-        }
-      }
-
-      .filter-range {
-        .range-slider {
-          width: 100%;
-
-          input[type='range'] {
-            width: 100%;
-            height: 6px;
-            margin: 0.5rem 0;
-            background: #ddd;
-            border-radius: 5px;
-
-            &::-webkit-slider-thumb {
-              width: 16px;
-              height: 16px;
-              background-color: #ff9800;
-              border-radius: 50%;
-              cursor: pointer;
-            }
-
-            &::-moz-range-thumb {
-              width: 16px;
-              height: 16px;
-              background-color: #ff9800;
-              border-radius: 50%;
-              cursor: pointer;
-            }
-          }
-
-          .price-values {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-            color: #555;
-          }
-        }
-      }
-
-      .filter-rating {
-        input[type='number'] {
-          text-align: center;
-        }
-      }
     }
 
     &__gallery {
@@ -411,7 +238,6 @@
       gap: 1.5rem;
       margin-bottom: 2rem;
 
-      /* Force 4 columns for small results */
       &::after {
         content: '';
         visibility: hidden;
@@ -434,9 +260,15 @@
       margin-top: 1rem;
       font-weight: bold;
     }
+    &.dark {
+      .catalog-page {
+        &__header {
+          color: white;
+        }
+      }
+    }
   }
 
-  /* Media Queries */
   @media (max-width: 768px) {
     .catalog-page {
       &__filters {

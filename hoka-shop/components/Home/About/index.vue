@@ -1,6 +1,13 @@
 <template>
   <div>
-    <div class="details">
+    <div
+      :class="[
+        'details',
+        {
+          dark: darkModeStore.isDarkMode,
+        },
+      ]"
+    >
       <div class="details__header">
         <p>About</p>
       </div>
@@ -20,6 +27,11 @@
 
 <script setup lang="ts">
   const router = useRouter()
+  const darkModeStore = useDarkModeStore()
+
+  onMounted(() => {
+    darkModeStore.loadDarkModeFromCookie()
+  })
 
   const goToTheAboutPage = () => {
     router.push('/about')
@@ -31,12 +43,19 @@
     max-width: 800px;
     margin: auto;
     margin-top: 5rem;
+    color: black;
     font-size: 1.2rem;
     line-height: 2rem;
     text-align: center;
     &__header {
       font-size: 2rem;
       margin-bottom: 2rem;
+    }
+    &.dark {
+      color: white;
+      .details__header {
+        color: black;
+      }
     }
   }
 

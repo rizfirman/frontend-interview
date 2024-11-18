@@ -142,6 +142,7 @@
     border-radius: 1rem;
     padding: 20px;
     transition: transform 0.2s ease;
+    color: black;
 
     &:hover {
       animation: wiggle 0.3s ease;
@@ -277,6 +278,7 @@
     }
     &.dark {
       border: white 1px solid;
+      color: white;
       .product__card {
         &--label {
           color: white;
