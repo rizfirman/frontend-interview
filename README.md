@@ -144,11 +144,15 @@ Display an alert: "Deposit not detected. Please verify the network used for the 
 
 answer:
 
-Transaction Status: Whether it succeeded or failed.
-Sender and Receiver: The from address initiating the transaction and the to address receiving it.
-Gas Fees: The amount of gas used and the gas price set for this transaction.
-Network: It was executed on the Mantle network.
-Purpose: It could involve transferring tokens, executing a smart contract, or other actions.
+- Transaction Status: Whether it succeeded or failed.
+
+- Sender and Receiver: The from address initiating the transaction and the to address receiving it.
+
+- Gas Fees: The amount of gas used and the gas price set for this transaction.
+
+- Network: It was executed on the Mantle network.
+
+- Purpose: It could involve transferring tokens, executing a smart contract, or other actions.
 
 A proper analysis requires viewing the transaction details directly via the provided link.
 
