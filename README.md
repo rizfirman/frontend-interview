@@ -48,8 +48,7 @@ Design and implement interface for video streaming platform which have core func
 
 3. Sorting:
 
-- Implement sort by views, likes, and upload date.
-  \***\*For search, filter, and sorting, implement an infinite scroll feature or “Load More” feature.**
+- Implement sort by views, likes, and upload date. \***\*For search, filter, and sorting, implement an infinite scroll feature or “Load More” feature.**
 
 4. Must Have Feature:
 
@@ -116,8 +115,6 @@ Think of layer 1 and layer 2 as a highway system:
 Layer 1 is like the main highway (e.g., Ethereum, Bitcoin). It's where most traffic goes, and it's responsible for maintaining the core infrastructure, security, and functionality. However, it can get crowded, leading to slow speeds and high costs (gas fees).
 
 Layer 2 is like an express lane built on top of the main highway. It helps handle extra traffic by processing transactions faster and more cheaply. Examples include Arbitrum and Optimism, which are designed to work alongside Ethereum, taking some of the load off the main highway.
-
-2. Explain this scenario, a user wants to withdraw Arbitrum using Arbitrum One Network from exchange A to exchange B but the user has a mistake copy paste the Ethereum Main Net address deposit instead of Arbitrum One Network address deposit, what will happen? Say our exchange is the exchange B as a receiver, list all possibilities for this scenario and how will you as a frontend displaying the user balance regarding this scenario?
 
 answer:
 
